@@ -27,17 +27,26 @@ urlpatterns = [
          views.ApplicationViewSet.as_view({'get': 'get_applications', 'post': 'create_application'}),
          name='applications'
          ),
-    path('applications/<int:id>/', views.delete_application, name='delete_application'),
+    path('applications/<int:id>/',
+         views.ApplicationDeleteView.as_view({'delete': 'delete_application'}),
+         name='delete_application'
+         ),
     path('applications/<int:id>/accept',
          views.ApplicationAcceptView.as_view({'post': 'accept_application'}),
          name='accept_application'
          ),
+    path('applications/<int:id>/checkStatus',
+         views.ApplicationCheckView.as_view({'get': 'check_application_status'}),
+         name='check_application_status'
+         ),
 
-    path('games/current/', views.get_current_games, name='current_games'),
-    path('games/last/', views.get_last_games, name='last_games'),
-    path('games/<int:id>/', views.get_game, name='get_game'),
-
-    path('moves/', views.MoveView.as_view({'post': 'get_moves'}), name='applications')
+    path('games/current/', views.CurrentGamesView.as_view({'get': 'get_current_games'}), name='current_games'),
+    path('games/last/', views.LastGamesView.as_view({'get': 'get_last_games'}), name='last_games'),
+    path('games/<int:id>/', views.GameView.as_view({'get': 'get_game'}), name='get_game'),
+    path('games/<int:game_id>/moves/',
+         views.MoveView.as_view({'get': 'get_moves', 'post': 'create_move'}),
+         name='applications'
+         )
 ]
 
 # from rest_framework import routers
