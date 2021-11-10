@@ -1,0 +1,45 @@
+"""chess URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from chess_server import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+
+    path('applications/',
+         views.ApplicationViewSet.as_view({'get': 'get_applications', 'post': 'create_application'}),
+         name='applications'
+         ),
+    path('applications/<int:id>/', views.delete_application, name='delete_application'),
+    path('applications/<int:id>/accept',
+         views.ApplicationAcceptView.as_view({'post': 'accept_application'}),
+         name='accept_application'
+         ),
+
+    path('games/current/', views.get_current_games, name='current_games'),
+    path('games/last/', views.get_last_games, name='last_games'),
+    path('games/<int:id>/', views.get_game, name='get_game'),
+
+    path('moves/', views.MoveView.as_view({'post': 'get_moves'}), name='applications')
+]
+
+# from rest_framework import routers
+# from chess_server import views
+#
+# router = routers.DefaultRouter()
+# router.register('games/', views.GameViewSet, basename='games')
+# urlpatterns = router.urls
