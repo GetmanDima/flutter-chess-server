@@ -1,7 +1,9 @@
 # from django.contrib.auth.models import User
 from django.http import HttpResponse
-from rest_framework.decorators import action
+from rest_framework.decorators import action, authentication_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ViewSet
+from .models import Application
 
 
 @action(detail=True, methods=['get'], name='current_games')
@@ -20,12 +22,16 @@ def get_game(request):
 
 
 class ApplicationViewSet(ViewSet):
+    permission_classes = [IsAuthenticated]
+
     @action(detail=True, methods=['get'])
     def get_applications(self, request):
+        print(request.user.email)
         return HttpResponse('applications')
 
     @action(detail=True, methods=['post'])
     def create_application(self, request):
+        application = Application.objects.create(author=request.user)
         return HttpResponse('create application')
 
 
