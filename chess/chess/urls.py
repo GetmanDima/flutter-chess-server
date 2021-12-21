@@ -46,7 +46,12 @@ urlpatterns = [
     path('games/<int:game_id>/moves/',
          views.MoveView.as_view({'get': 'get_moves', 'post': 'create_move'}),
          name='applications'
-         )
+         ),
+
+    path('getAuthUser/',
+         views.UserView.as_view({'post': 'get_auth_user'}),
+         name='get_auth_user'
+         ),
 ]
 
 # from rest_framework import routers
